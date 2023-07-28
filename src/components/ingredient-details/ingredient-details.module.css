@@ -1,0 +1,21 @@
+.image_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.details_container {
+  display: flex;
+  justify-content: center;
+  column-gap: 20px;
+}
+
+.details_element {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
