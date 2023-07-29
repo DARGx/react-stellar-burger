@@ -1,0 +1,14 @@
+.ingredients {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+}
+
+.menu {
+  width: 100%;
+  display: flex;
+}
+
+.container {
+  overflow-y: scroll;
+}

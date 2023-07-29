@@ -1,0 +1,43 @@
+.header {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--background);
+}
+
+.nav {
+  display: flex;
+  max-width: 1280px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.link {
+  display: flex;
+  color: var(--text-inactive-color);
+  align-items: center;
+  text-decoration: none;
+}
+
+.link_active {
+  color: var(--text-primary-color);
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+}
+
+.header__container {
+  flex: 1;
+}
+
+.link__container_left {
+  display: flex;
+  gap: 8px;
+}
+
+.header__container_right {
+  display: flex;
+  justify-content: flex-end;
+}
