@@ -6,6 +6,7 @@
 
 .container {
   overflow-y: scroll;
+  flex-grow: 1;
 }
 
 .order_sum {
@@ -31,5 +32,11 @@
   align-items: center;
 }
 
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
 
