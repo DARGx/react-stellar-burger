@@ -2,28 +2,21 @@ import { useEffect, useState, useRef } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Category } from '../category/category';
 import { throttle } from 'throttle-debounce';
-import { IngredientDetails } from '../ingredient-details/ingredient-details';
-import { Modal } from '../modal/modal';
-import { useSelector, useDispatch } from 'react-redux';
-import { currentIngredientActions } from '../../services/reducers/current-ingredient';
-import { fetchIngredients } from '../../services/reducers/ingredients'
 import styles from './burger-ingredients.module.css';
 import cn from 'classnames';
+import { useIngredients } from '../../hooks/ingredients';
 
 export const BurgerIngredients = () => {
-  const data = useSelector((state) => state.ingredients.data);
+  const { ingredients } = useIngredients();
   const [current, setCurrent] = useState('buns');
   const containerRef = useRef();
   const bunRef = useRef();
   const mainRef = useRef();
   const sauceRef = useRef();
 
-  const buns = data.filter((item) => item.type === 'bun');
-  const main = data.filter((item) => item.type === 'main');
-  const sauce = data.filter((item) => item.type === 'sauce');
-
-  const ingredientWindow = useSelector((store) => store.currentIngredient.data)
-  const dispatch = useDispatch()
+  const buns = ingredients.filter((item) => item.type === 'bun');
+  const main = ingredients.filter((item) => item.type === 'main');
+  const sauce = ingredients.filter((item) => item.type === 'sauce');
 
   function handleClickTab(tab) {
     setCurrent(tab);
@@ -33,9 +26,6 @@ export const BurgerIngredients = () => {
 
   const getCoords = (ref) => ref.current.getBoundingClientRect();
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
 
   useEffect(() => {
 
@@ -81,11 +71,6 @@ export const BurgerIngredients = () => {
         <Category title='Соусы' id='sauce' ingredients={sauce} headerRef={sauceRef} />
         <Category title='Начинки' id='main' ingredients={main} headerRef={mainRef} />
       </section>
-      {ingredientWindow && (
-        <Modal title='Детали ингредиента' onClose={() => dispatch(currentIngredientActions.unset())}>
-          <IngredientDetails data={ingredientWindow} />
-        </Modal>
-      )}
     </section>
   );
 };

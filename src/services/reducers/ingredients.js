@@ -7,6 +7,7 @@ import * as api from '../../utils/api';
 const initialState = {
   data: [],
   isLoading: false,
+  isLoaded: false,
   error: null
 };
 
@@ -35,6 +36,7 @@ export const slice = createSlice({
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.data = action.payload;
         state.isLoading = false;
+        state.isLoaded = true;
         state.error = null;
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
@@ -44,4 +46,7 @@ export const slice = createSlice({
   },
 })
 
+export const ingredientsSelectors = {
+  byId: (id) => (state) => state.data.find((item) => item._id === id),
+};
 export default slice.reducer;
