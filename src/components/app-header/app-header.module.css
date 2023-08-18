@@ -13,8 +13,8 @@
 }
 
 .link {
-  display: flex;
   color: var(--text-inactive-color);
+  display: flex;
   align-items: center;
   text-decoration: none;
 }
