@@ -1,13 +1,13 @@
 import {
   Input,
   Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
-import { FC, useState } from "react";
-import { authRegister } from "../../services/reducers/auth";
-import { useLoggedIn } from "../../hooks/logged-in";
-import styles from "./Register.module.css";
-import { useAppDispatch } from "../../services/store";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useNavigate } from 'react-router-dom';
+import { FC, useState } from 'react';
+import { authRegister } from '../../services/reducers/auth';
+import { useLoggedIn } from '../../hooks/logged-in';
+import { useAppDispatch } from '../../services/store';
+import styles from './Register.module.css';
 
 export const RegisterPage: FC = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export const RegisterPage: FC = () => {
     }
   };
 
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
 
     setFormValue({

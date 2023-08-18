@@ -1,15 +1,14 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "./auth"
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './auth'
 
 export const useLoggedIn = () => {
-  const { user, isFinished } = useAuth();
+  const { user, isSuccess } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isFinished && user) {
-      console.log(' useLoggedIn has user ');
+    if (isSuccess) {
       navigate('/', { replace: true });
     }
-  }, [isFinished, user, navigate]);
+  }, [isSuccess, user, navigate]);
 };

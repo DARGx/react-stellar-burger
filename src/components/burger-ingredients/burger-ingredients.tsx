@@ -2,10 +2,10 @@ import { useEffect, useState, useRef, FC } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Category } from '../category/category';
 import { throttle } from 'throttle-debounce';
-import styles from './burger-ingredients.module.css';
-import cn from 'classnames';
 import { useIngredients } from '../../hooks/ingredients';
 import { IngredientType } from '../../types/ingredient';
+import styles from './burger-ingredients.module.css';
+import cn from 'classnames';
 
 export const BurgerIngredients: FC = () => {
   const { ingredients } = useIngredients();

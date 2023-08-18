@@ -1,47 +1,53 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { authUser, authRefresh } from "../services/reducers/auth";
-import { AppState, useAppDispatch } from '../services/store';
+import { useEffect } from 'react';
+import { authUser, authRefresh } from '../services/reducers/auth';
+import { useAppDispatch, useAppSelector } from '../services/store';
+import { getRequestStatus } from '../utils/request-status';
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
-  const { user, refreshToken, accessToken } = useSelector((state: AppState) => state.auth);
-  const [isFinished, setIsFinished] = useState(false);
+  const { user, refreshToken, accessToken, status } = useAppSelector((state) => state.auth);
+  const { isInitial, isPending, isError, isSuccess } = getRequestStatus(status);
 
   useEffect(() => {
     (async () => {
-      if (accessToken) {
-        try {
-          const res = await dispatch(authUser()).unwrap();
-          if (res.success) {
+      if (isPending || isSuccess) {
+        return;
+      }
 
-          } else {
-            throw Error(JSON.stringify(res));
-          }
-        } catch (error) {
-          console.error(error);
+      try {
+        if (!accessToken) {
+          throw Error('No access token');
         }
-      } else if (refreshToken) {
+        const res = await dispatch(authUser()).unwrap();
+        if (res.success) {
+
+        } else {
+          throw Error(JSON.stringify(res));
+        }
+      } catch (error) {
         try {
-          const res = await dispatch(authRefresh()).unwrap();
+          if (!refreshToken) {
+            throw Error('No refresh token');
+          }
+          const res = await dispatch(authRefresh()).unwrap(); 
           if (res.success) {
             await dispatch(authUser()).unwrap();
           } else {
             throw Error(JSON.stringify(res));
           }
         } catch (error) {
-            console.error(error)
+          console.error(error)
         }
       }
-
-      setIsFinished(true);
     })();
-
-  }, [accessToken, refreshToken, dispatch]);
+  }, [accessToken, dispatch, isPending, isSuccess, refreshToken]);
 
 
   return {
     user,
-    isFinished,
+    isInitial,
+    isPending,
+    isSuccess,
+    isError,
   }
 };

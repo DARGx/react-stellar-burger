@@ -1,20 +1,19 @@
 import {
   Input,
   Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { FC, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useLoggedIn } from "../../hooks/logged-in";
-import { useSelector } from "react-redux";
-import styles from "./ResetPassword.module.css";
-import * as api from "../../utils/api";
-import { AppState } from '../../services/store';
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { FC, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useLoggedIn } from '../../hooks/logged-in';
+import { useAppSelector } from '../../services/store';
+import * as api from '../../utils/api';
+import styles from './ResetPassword.module.css';
 
 export const ResetPasswordPage: FC = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
-  const { restoreOk } = useSelector((state: AppState) => state.auth);
+  const { restoreOk } = useAppSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
 
   useLoggedIn();

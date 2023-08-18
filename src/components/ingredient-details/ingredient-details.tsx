@@ -1,14 +1,13 @@
 import { FC } from 'react';
+import { Ingredient } from '../../types/ingredient';
 import styles from './ingredient-details.module.css';
 import cn from 'classnames';
-import { IngredientWithUid } from '../../types/ingredient';
 
-
-interface IIngredientDetails {
-  data: IngredientWithUid;
+interface IngredientDetailsProp {
+  data: Ingredient;
 }
 
-export const IngredientDetails: FC<IIngredientDetails> = ({ data }) => {
+export const IngredientDetails: FC<IngredientDetailsProp> = ({ data }) => {
   const items = [
     {
       label: 'Калории,ккал',

@@ -1,6 +1,6 @@
-import { FC, useEffect } from "react";
-import { useAuth } from "../../hooks/auth";
-import { Navigate, useLocation } from "react-router-dom";
+import { FC, useEffect } from 'react';
+import { useAuth } from '../../hooks/auth';
+import { Navigate, useLocation } from 'react-router-dom';
 import { authActions } from '../../services/reducers/auth'
 import { useAppDispatch } from '../../services/store';
 
@@ -10,17 +10,17 @@ type ProtectedRouteProps = {
 }
 
 export const ProtectedRouteElement: FC<ProtectedRouteProps> = ({ element }) => {
-  const { user, isFinished } = useAuth();
+  const { user, isError, isPending, isInitial } = useAuth();
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isFinished && !user) {
+    if (isError) {
       dispatch(authActions.setReturnUrl(pathname));
     }
-  }, [isFinished, user, dispatch, pathname]);
+  }, [isError, user, dispatch, pathname]);
 
-  if (!isFinished) {
+  if (isPending || isInitial) {
     return null;
   }
 

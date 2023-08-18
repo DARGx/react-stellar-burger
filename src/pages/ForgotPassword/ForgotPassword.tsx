@@ -1,14 +1,14 @@
 import {
   Input,
   Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useLoggedIn } from "../../hooks/logged-in";
-import { useAppDispatch } from "../../services/store";
-import { authActions } from "../../services/reducers/auth";
-import styles from "./ForgotPassword.module.css";
-import * as api from "../../utils/api";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useLoggedIn } from '../../hooks/logged-in';
+import { useAppDispatch } from '../../services/store';
+import { authActions } from '../../services/reducers/auth';
+import styles from './ForgotPassword.module.css';
+import * as api from '../../utils/api';
 
 export const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export const ForgotPasswordPage = () => {
     }
   };
 
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value;
     setEmail(value);
   };

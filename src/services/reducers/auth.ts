@@ -1,5 +1,4 @@
 import {
-  createAsyncThunk,
   createSlice,
   PayloadAction
 } from '@reduxjs/toolkit';
@@ -8,6 +7,7 @@ import { AppState } from '../store';
 import { IFormProps } from '../../types/form';
 import { User } from '../../utils/api';
 import { createAppAsyncThunk } from '../thunk';
+import { RequestStatus } from '../../utils/request-status';
 import * as api from '../../utils/api';
 
 export const DATA_KEY = {
@@ -15,15 +15,16 @@ export const DATA_KEY = {
   REFRESH_TOKEN: 'refreshToken',
 };
 
-type State = {
+type authState = {
   user: User | null;
   accessToken: string;
   refreshToken: string;
   returnUrl: string;
   restoreOk: boolean;
+  status: RequestStatus;
 }
 
-const setAccessToken = (state: State, accessToken: string) => {
+const setAccessToken = (state: authState, accessToken: string) => {
   state.accessToken = accessToken;
 
   if (accessToken) {
@@ -34,7 +35,7 @@ const setAccessToken = (state: State, accessToken: string) => {
   }
 };
 
-const setRefreshToken = (state: State, refreshToken: string) => {
+const setRefreshToken = (state: authState, refreshToken: string) => {
   state.refreshToken = refreshToken;
   if (refreshToken) {
     localStorage.setItem(DATA_KEY.REFRESH_TOKEN, refreshToken);
@@ -51,7 +52,8 @@ export const slice = createSlice({
     refreshToken: localStorage.getItem(DATA_KEY.REFRESH_TOKEN) || '',
     returnUrl: '',
     restoreOk: false,
-  } as State,
+    status: RequestStatus.INITIAL,
+  } as authState,
   reducers: {
     setReturnUrl(state, { payload }) {
       state.returnUrl = payload;
@@ -67,7 +69,7 @@ export const slice = createSlice({
       user: User;
     }>;
 
-    const onRegister = (state: State, { payload }: RegisterPayload) => {
+    const onRegister = (state: authState, { payload }: RegisterPayload) => {
       setAccessToken(state, payload.accessToken);
       setRefreshToken(state, payload.refreshToken);
       state.user = payload.user;
@@ -79,15 +81,23 @@ export const slice = createSlice({
       payload
     }) => {
       setAccessToken(state, payload.accessToken);
+      setRefreshToken(state, payload.refreshToken);
     });
     builder.addCase(authLogout.fulfilled, (state) => {
       setAccessToken(state, '');
       setRefreshToken(state, '');
       state.user = null;
+      state.status = RequestStatus.INITIAL;
+    });
+    builder.addCase(authUser.pending, (state) => {
+      state.status = RequestStatus.PENDING;
     });
     builder.addCase(authUser.fulfilled, (state, { payload }) => {
       state.user = payload.user;
-
+      state.status = RequestStatus.SUCCESS;
+    });
+    builder.addCase(authUser.rejected, (state) => {
+      state.status = RequestStatus.ERROR;
     });
   
     builder.addCase(patchUser.fulfilled, (state, { payload }) => {
@@ -102,12 +112,12 @@ export const authSelectors = {
   refreshToken: (state: AppState) => state.auth.refreshToken,
 };
 
-export const authRegister = createAsyncThunk(
+export const authRegister = createAppAsyncThunk(
   'auth/register',
   api.authRegister,
 );
 
-export const authLogin = createAsyncThunk(
+export const authLogin = createAppAsyncThunk(
   'auth/login',
   api.authLogin
 );

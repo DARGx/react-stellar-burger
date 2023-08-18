@@ -1,6 +1,6 @@
-import { FC } from "react";
-import pic from "../../images/404.jpg";
-import styles from "./NotFound.module.css";
+import { FC } from 'react';
+import pic from '../../images/404.jpg';
+import styles from './NotFound.module.css';
 
 export const NotFoundPage: FC = () => {
   return (

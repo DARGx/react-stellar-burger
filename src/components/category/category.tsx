@@ -1,22 +1,21 @@
+import { FC } from "react";
 import { CategoryItem } from "../category-item/category-item";
+import { useNavigate } from "react-router-dom";
+import { Ingredient, IngredientType } from '../../types/ingredient';
 import styles from "./category.module.css";
 import cn from "classnames";
-import { useNavigate } from "react-router-dom";
-import { FC } from "react";
-import { IngredientType, IngredientWithUid } from '../../types/ingredient';
 
 interface ICategory {
   title: string;
   id: IngredientType;
-  ingredients: IngredientWithUid[];
+  ingredients: Ingredient[];
   headerRef: React.RefObject<HTMLHeadingElement>;
 }
-
 
 export const Category: FC<ICategory> = ({ title, id, ingredients, headerRef }) => {
   const navigate = useNavigate();
 
-  const onClick = (data: IngredientWithUid) => {
+  const onClick = (data: Ingredient) => {
     navigate(`/ingredients/${data._id}`, { state: { ingredientModal: true } });
   };
 

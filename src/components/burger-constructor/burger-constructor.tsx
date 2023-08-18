@@ -5,23 +5,21 @@ import { OrderDetails } from '../order-details/order-details';
 import { useDrop } from 'react-dnd';
 import { burgerConstructorActions, burgerConstructorSelectors } from '../../services/reducers/burger-constructor';
 import { createOrder } from '../../services/reducers/created-order';
-import { useSelector } from 'react-redux';
 import { BurgerConstructorItem } from '../burger-constructor-item/burger-constructor-item';
 import { useAuth } from '../../hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { authActions } from '../../services/reducers/auth';
-import { AppState, useAppDispatch } from '../../services/store';
+import { useAppDispatch, useAppSelector } from '../../services/store';
 import { Ingredient, IngredientType, IngredientWithUid } from '../../types/ingredient';
 import styles from './burger-constructor.module.css';
 import cn from 'classnames';
 
-
 export const BurgerConstructor: FC = () => {
-  const bun = useSelector(burgerConstructorSelectors.bun);
-  const ingredients = useSelector(burgerConstructorSelectors.ingredients);
-  const sum = useSelector(burgerConstructorSelectors.sum);
-  const orderIds = useSelector(burgerConstructorSelectors.orderIds);
-  const { data: orderData, isLoading: isOrderLoading } = useSelector((state: AppState) => state.createdOrder);
+  const bun = useAppSelector(burgerConstructorSelectors.bun);
+  const ingredients = useAppSelector(burgerConstructorSelectors.ingredients);
+  const sum = useAppSelector(burgerConstructorSelectors.sum);
+  const orderIds = useAppSelector(burgerConstructorSelectors.orderIds);
+  const { data: orderData, isLoading: isOrderLoading } = useAppSelector((state) => state.createdOrder);
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -49,7 +47,7 @@ export const BurgerConstructor: FC = () => {
       navigate('/login');
     }
   };
-  const [dropState, drop] = useDrop<Ingredient>(() => ({
+  const [, drop] = useDrop<Ingredient>(() => ({
     accept: 'ingredient',
     drop: (item) => {
       if (item.type === IngredientType.BUN) {
@@ -69,7 +67,7 @@ export const BurgerConstructor: FC = () => {
   if (isEmpty) {
     return (
       <>
-        <div ref={drop} className={cn(styles.empty, "text text_type_main-medium")}>Добавьте булку и ингредиенты</div>
+        <div ref={drop} className={cn(styles.empty, "text text_type_main-medium")}>Выберите ингредиенты по вкусу<br/>и обязательно добавьте булку!</div>
         { modalJsx }
       </>
     );
