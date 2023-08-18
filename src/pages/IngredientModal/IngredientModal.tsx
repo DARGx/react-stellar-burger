@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { useParams } from "react-router-dom";
-import { Modal } from "../../components/modal/modal";
-import { useIngredients } from "../../hooks/ingredients";
-import { IngredientDetails } from "../../components/ingredient-details/ingredient-details";
+import { FC } from 'react';
+import { useParams } from 'react-router-dom';
+import { Modal } from '../../components/modal/modal';
+import { useIngredients } from '../../hooks/ingredients';
+import { IngredientDetails } from '../../components/ingredient-details/ingredient-details';
 
 export const IngredientModalPage: FC = () => {
   const params = useParams();

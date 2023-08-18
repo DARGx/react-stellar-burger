@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
-import { Ingredient, IngredientWithUid } from '../../types/ingredient';
 import { AppState } from '../store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Ingredient, IngredientWithUid } from '../../types/ingredient';
+import { v4 as uuidv4 } from 'uuid';
 
 type State = {
   bun: Ingredient | null;

@@ -1,0 +1,22 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+
+.text_container {
+  width: 320px;
+  height: 64px;
+  cursor: pointer;
+}
+
+.link {
+  display: flex;
+  color: var(--text-inactive-color);
+  align-items: center;
+  text-decoration: none;
+}
+
+.link.active {
+  color: var(--text-primary-color);
+}

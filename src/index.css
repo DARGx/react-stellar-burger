@@ -1,1 +1,9 @@
 @import './vendor/normalize.css';
+
+html, body, #root {
+  height: 100%;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}

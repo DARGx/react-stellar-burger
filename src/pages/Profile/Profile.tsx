@@ -1,20 +1,20 @@
 import {
   Input,
   Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { authLogout, authUser, patchUser } from "../../services/reducers/auth";
-import { FC, useEffect, useState } from "react";
-import { AppState, useAppDispatch } from '../../services/store';
-import { IFormProps } from "../../types/form";
-import styles from "./Profile.module.css";
-import cn from "classnames";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useNavigate } from 'react-router-dom';
+import { authUser, patchUser } from '../../services/reducers/auth';
+import { FC, useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../services/store';
+import { IFormProps } from '../../types/form';
+import { ProfileNav } from '../../components/profile-nav/profile-nav';
+import styles from './Profile.module.css';
+import cn from 'classnames';
 
 export const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state: AppState) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
   const [formValue, setFormValue] = useState<IFormProps>({
     name: "",
     email: "",
@@ -57,18 +57,7 @@ export const ProfilePage: FC = () => {
     }
   };
 
-  const onLogout = async () => {
-    try {
-      const res = await dispatch(authLogout()).unwrap();
-      if (res.success) {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
 
     setFormValue({
@@ -77,59 +66,9 @@ export const ProfilePage: FC = () => {
     });
   };
 
-  const onOrderPage = async () => {
-     navigate("/orders")
-  };
-
   return (
     <div className={cn(styles.main_container, "pt-30")}>
-      <nav className={cn(styles.menu, "mr-15")}>
-        <Link to="/profile" className={cn(styles.link, styles.link_active)}>
-          <span
-            className={cn(styles.text_container, "text text_type_main-medium")}
-          >
-            Профиль
-          </span>
-        </Link>
-
-        <Link
-          to="/profile/orders"
-          onClick={onOrderPage}
-          className={cn(
-            styles.link,
-            styles.link_inactive,
-            "text text_type_main-medium text_color_inactive"
-          )}
-        >
-          <span
-            className={cn(styles.text_container, "text text_type_main-medium")}
-          >
-            История заказов
-          </span>
-        </Link>
-
-        <Link
-          to=""
-          onClick={onLogout}
-          className={cn(
-            styles.link,
-            styles.link_inactive,
-            "text text_type_main-medium text_color_inactive mb-20"
-          )}
-        >
-          <span
-            className={cn(styles.text_container, "text text_type_main-medium")}
-          >
-            Выход
-          </span>
-        </Link>
-
-        <p className={cn("text text_type_main-default text_color_inactive")}>
-          В этом разделе вы можете
-          <br />
-          изменить свои персональные данные
-        </p>
-      </nav>
+      <ProfileNav />
 
       <form className={styles.form} onSubmit={onSubmit}>
         <Input

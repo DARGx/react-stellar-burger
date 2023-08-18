@@ -1,14 +1,13 @@
 import {
   Input,
   Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { authLogin } from "../../services/reducers/auth";
-import { useLoggedIn } from "../../hooks/logged-in";
-import styles from "./Login.module.css";
-import { AppState, useAppDispatch } from '../../services/store';
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { authLogin } from '../../services/reducers/auth';
+import { useLoggedIn } from '../../hooks/logged-in';
+import styles from './Login.module.css';
+import { useAppSelector, useAppDispatch } from '../../services/store';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -19,11 +18,11 @@ export const LoginPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const returnUrl = useSelector((state: AppState) => state.auth.returnUrl);
+  const returnUrl = useAppSelector((state) => state.auth.returnUrl);
 
   useLoggedIn();
 
-  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
 
     setFormValue({

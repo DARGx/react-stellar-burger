@@ -1,6 +1,6 @@
+import { FC } from 'react'
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink, useLocation } from "react-router-dom";
-import { FC } from 'react'
 import styles from '../app-header/app-header.module.css';
 import cn from 'classnames';
 
