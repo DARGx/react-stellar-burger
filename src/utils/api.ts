@@ -1,7 +1,7 @@
 import { Ingredient } from '../types/ingredient';
 import { getCookie } from './cookie';
 
-const BASE_URL = 'https://norma.nomoreparties.space/api';
+export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
 type BaseResponse = {
   success: boolean;

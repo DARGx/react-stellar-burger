@@ -67,7 +67,7 @@ export const BurgerConstructor: FC = () => {
   if (isEmpty) {
     return (
       <>
-        <div ref={drop} className={cn(styles.empty, "text text_type_main-medium")}>Выберите ингредиенты по вкусу<br/>и обязательно добавьте булку!</div>
+        <div id='empty' ref={drop} className={cn(styles.empty, "text text_type_main-medium")}>Выберите ингредиенты по вкусу<br/>и обязательно добавьте булку!</div>
         { modalJsx }
       </>
     );
@@ -78,14 +78,14 @@ export const BurgerConstructor: FC = () => {
   };
 
   return (
-    <section ref={drop} className={styles.wrapper}>
+    <section id='container' ref={drop} className={styles.wrapper}>
       <div className='ml-6 mb-4'>
         {!!bun && (
           <ConstructorElement text={bun.name + ' (верх)'} price={bun.price} thumbnail={bun.image} type='top' isLocked={true} />
         )}
       </div>
 
-      <div className={cn(styles.container, 'custom-scroll')}>
+      <div id='container' className={cn(styles.container, 'custom-scroll')}>
         {ingredients.length === 0 && <div className={cn(styles.empty, "text text_type_main-medium")}>Добавьте ингредиенты</div>}
         {ingredients.map((data, index) => {
           const lastBun = ingredients.length - 1 === index;

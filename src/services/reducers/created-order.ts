@@ -1,27 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { createAppAsyncThunk } from '../thunk';
-import { OrderProps } from '../../components/order-details/order-details';
-import * as api from '../../utils/api';
+import { createSlice } from "@reduxjs/toolkit";
+import { createAppAsyncThunk } from "../thunk";
+import { OrderProps } from "../../components/order-details/order-details";
+import * as api from "../../utils/api";
 
-type State = {
-  data: OrderProps['data'] | null;
+export type State = {
+  data: OrderProps["data"] | null;
   isLoading: boolean;
   error: string | null;
 };
 
-const getInitialState = (): State => ({
+export const getInitialState = (): State => ({
   data: null,
   isLoading: false,
   error: null,
 });
 
 export const createOrder = createAppAsyncThunk(
-  'createdOrder/fetch',
-  api.createOrder,
+  "createdOrder/fetch",
+  api.createOrder
 );
 
 export const slice = createSlice({
-  name: 'createdOrder',
+  name: "createdOrder",
   initialState: getInitialState(),
   reducers: {},
   extraReducers: (builder) => {
@@ -37,13 +37,14 @@ export const slice = createSlice({
         state.error = null;
       })
       .addCase(createOrder.rejected, (state, { payload }) => {
-        state.error = payload instanceof Error ? payload.message : 'Неизвестная ошибка';
+        state.error =
+          payload instanceof Error ? payload.message : "Неизвестная ошибка";
         state.isLoading = false;
       });
   },
 });
 
 export const createOrderSelectors = {
-  data: (state: {createdOrder: State}) => state.createdOrder.data,
+  data: (state: { createdOrder: State }) => state.createdOrder.data,
 };
 export default slice.reducer;

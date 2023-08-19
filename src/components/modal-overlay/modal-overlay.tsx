@@ -5,7 +5,7 @@ import styles from '../modal-overlay/modal-overlay.module.css'
 
 const ModalOverlay: FC<ModalOverlayProps> = ({ onClick }) => {
   return (
-    <div onClick={onClick} className={styles.overlay}></div>
+    <div id='overlay' onClick={onClick} className={styles.overlay}></div>
   )
 }
 

@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
-import { authUser, authRefresh } from '../services/reducers/auth';
-import { useAppDispatch, useAppSelector } from '../services/store';
-import { getRequestStatus } from '../utils/request-status';
+import { useEffect } from "react";
+import { authUser, authRefresh } from "../services/reducers/auth";
+import { useAppDispatch, useAppSelector } from "../services/store";
+import { getRequestStatus } from "../utils/request-status";
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
-  const { user, refreshToken, accessToken, status } = useAppSelector((state) => state.auth);
+  const { user, refreshToken, accessToken, status } = useAppSelector(
+    (state) => state.auth
+  );
   const { isInitial, isPending, isError, isSuccess } = getRequestStatus(status);
 
   useEffect(() => {
@@ -16,32 +18,25 @@ export const useAuth = () => {
 
       try {
         if (!accessToken) {
-          throw Error('No access token');
+          throw Error("No access token");
         }
         const res = await dispatch(authUser()).unwrap();
         if (res.success) {
-
         } else {
           throw Error(JSON.stringify(res));
         }
       } catch (error) {
         try {
-          if (!refreshToken) {
-            throw Error('No refresh token');
-          }
-          const res = await dispatch(authRefresh()).unwrap(); 
+          const res = await dispatch(authRefresh()).unwrap();
           if (res.success) {
             await dispatch(authUser()).unwrap();
           } else {
             throw Error(JSON.stringify(res));
           }
-        } catch (error) {
-          console.error(error)
-        }
+        } catch (error) {}
       }
     })();
   }, [accessToken, dispatch, isPending, isSuccess, refreshToken]);
-
 
   return {
     user,
@@ -49,5 +44,5 @@ export const useAuth = () => {
     isPending,
     isSuccess,
     isError,
-  }
+  };
 };
