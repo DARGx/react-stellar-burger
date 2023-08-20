@@ -9,15 +9,6 @@ import {
   slice,
 } from "./auth";
 
-const INITIAL_STATE = {
-  accessToken: "",
-  refreshToken: "",
-  restoreOk: false,
-  returnUrl: "",
-  user: null,
-  status: RequestStatus.INITIAL,
-};
-
 const initialState = slice.getInitialState();
 
 describe("auth reducer", () => {
@@ -143,7 +134,7 @@ describe("auth extraReducers", () => {
       action,
     );
     expect(nextState).toMatchObject({
-      ...INITIAL_STATE,
+      ...initialState,
       success: true,
     });
   });
@@ -151,7 +142,7 @@ describe("auth extraReducers", () => {
   it("authUser.pending", () => {
     const action = authUser.pending("auth/user");
     const nextState = slice.reducer(
-      { ...INITIAL_STATE, status: RequestStatus.PENDING },
+      { ...initialState, status: RequestStatus.PENDING },
       action
     );
     expect(nextState).toMatchObject({ status: RequestStatus.PENDING });
@@ -166,7 +157,7 @@ describe("auth extraReducers", () => {
       "auth/user"
     );
     const nextState = slice.reducer(
-      { ...INITIAL_STATE, status: RequestStatus.SUCCESS },
+      { ...initialState, status: RequestStatus.SUCCESS },
       action
     );
     expect(nextState).toMatchObject({ status: RequestStatus.SUCCESS });
@@ -178,7 +169,7 @@ describe("auth extraReducers", () => {
       "auth/user"
     );
     const nextState = slice.reducer(
-          { ...INITIAL_STATE, status: RequestStatus.ERROR },
+          { ...initialState, status: RequestStatus.ERROR },
           action
         );
     expect(nextState).toMatchObject({ status: RequestStatus.ERROR });
@@ -191,7 +182,7 @@ describe("auth extraReducers", () => {
     );
     const nextState = slice.reducer(
       {
-        ...INITIAL_STATE,
+        ...initialState,
         status: RequestStatus.ERROR,
       },
       action
