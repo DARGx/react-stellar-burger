@@ -3,6 +3,12 @@ import { BASE_URL } from "../../src/utils/api"
 describe("страница Конструктор", () => {
   const getModal = () => cy.get("#modals");
   const containsBun = () =>cy.contains("Краторная булка N-200i");
+  const getIngredients = () => {
+    cy.wait("@api.ingredients").then(() => {
+      cy.get(".burger-ingredient").first().click();
+      getModal().contains("Детали ингредиента");
+    });
+  };
 
   it("открытие модального окна с описанием ингредиента", () => {
     cy.visit("/");
@@ -11,10 +17,7 @@ describe("страница Конструктор", () => {
       "api.ingredients"
     );
 
-    cy.wait("@api.ingredients").then(() => {
-      cy.get(".burger-ingredient").first().click();
-      getModal().contains("Детали ингредиента");
-    });
+    getIngredients();
   });
 
   it("отображение в модальном окне данных ингредиента", () => {
@@ -45,10 +48,7 @@ describe("страница Конструктор", () => {
       mockIngredients
     ).as("api.ingredients");
 
-    cy.wait("@api.ingredients").then(() => {
-      cy.get(".burger-ingredient").first().click();
-      getModal().contains("Детали ингредиента");
-    });
+    getIngredients();
 
     getModal().contains(mockIngredient.name);
     getModal().contains("Калории,ккал");

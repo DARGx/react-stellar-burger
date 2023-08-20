@@ -12,6 +12,6 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl: "http://localhost:3000/stellar-burger-react",
+    baseUrl: "http://localhost:3000/react-stellar-burger",
   },
 });
