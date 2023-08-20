@@ -1,19 +1,21 @@
-import { AppState } from '../store';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Ingredient, IngredientWithUid } from '../../types/ingredient';
-import { v4 as uuidv4 } from 'uuid';
+import { AppState } from "../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Ingredient, IngredientWithUid } from "../../types/ingredient";
+import { v4 as uuidv4 } from "uuid";
 
 type State = {
   bun: Ingredient | null;
   ingredients: IngredientWithUid[];
-}
+};
+
+export const getInitialState = (): State => ({
+  bun: null,
+  ingredients: [],
+});
 
 export const slice = createSlice({
-  name: 'burgerConstructor',
-  initialState: {
-    bun: null,
-    ingredients: [],
-  } as State,
+  name: "burgerConstructor",
+  initialState: getInitialState(),
   reducers: {
     addBun: (state, action: PayloadAction<Ingredient>) => {
       state.bun = action.payload;
@@ -35,9 +37,16 @@ export const slice = createSlice({
       state.bun = null;
       state.ingredients = [];
     },
-    reorder: (state, { payload }: PayloadAction<{ from: IngredientWithUid, to: IngredientWithUid }>) => {
+    reorder: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ from: IngredientWithUid; to: IngredientWithUid }>
+    ) => {
       const getIndexByUniqueId = (uniqueId: string) =>
-        state.ingredients.findIndex((ingredient) => ingredient.uniqueId === uniqueId);
+        state.ingredients.findIndex(
+          (ingredient) => ingredient.uniqueId === uniqueId
+        );
 
       const fromIndex = getIndexByUniqueId(payload.from.uniqueId);
       const toIndex = getIndexByUniqueId(payload.to.uniqueId);

@@ -27,7 +27,9 @@ export const Modal: FC<ModalProps> = ({ title, onClose, children }) => {
       <section className={styles.modal}>
         <div className={cn(styles.header, 'ml-10 mt-10 mr-10')}>
           <h2 className="text text_type_main-large">{title}</h2>
-          <CloseIcon type={'primary'} onClick={onClose} />
+          <div id ='close' className={styles.close}>
+            <CloseIcon type={'primary'} onClick={onClose} />
+          </div>
         </div>
         {children}
       </section>

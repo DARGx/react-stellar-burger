@@ -1,16 +1,13 @@
-import {
-  createSlice,
-  PayloadAction
-} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type currentIngredientState = {
-  data: string | null
-}
+export type currentIngredientState = {
+  data: string | null;
+};
 
-const getInitialState = (): currentIngredientState => ({ data: null });
+export const getInitialState = (): currentIngredientState => ({ data: null });
 
 export const slice = createSlice({
-  name: 'currentIngredient',
+  name: "currentIngredient",
   initialState: getInitialState(),
   reducers: {
     set: (state, action: PayloadAction<string>) => {
@@ -20,8 +17,8 @@ export const slice = createSlice({
       state.data = null;
     },
     reset: (state, action: PayloadAction<string>) => {
-      state.data = action.payload
-    }
+      state.data = action.payload;
+    },
   },
 });
 

@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLDivEleme
 root.render(
   // <React.StrictMode>
     <>
-    <BrowserRouter>
+    <BrowserRouter basename='/react-stellar-burger'>
       <Provider store={store}>
         <DndProvider backend={HTML5Backend}>
           <App />

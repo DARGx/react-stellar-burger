@@ -3,9 +3,10 @@ import {
   ActionCreatorWithPayload,
   ActionCreatorWithoutPayload,
   Middleware,
-} from '@reduxjs/toolkit';
-import { TOrderList } from '../reducers/orders-page/reducer';
-import { AppState } from '../store';
+  MiddlewareAPI,
+} from "@reduxjs/toolkit";
+import { TOrderList } from "../reducers/orders-page/reducer";
+import { AppDispatch, AppState } from "../store";
 
 export type wsPayloadConnect = {
   wsUrl: string;
@@ -23,7 +24,7 @@ type TWsActions = {
 };
 
 export const socketMiddleware = (wsActions: TWsActions): Middleware => {
-  return (store) => {
+  return (store: MiddlewareAPI<AppDispatch, AppState>) => {
     let socket: WebSocket | null = null;
     let reconnectTimer: number = 0;
     let isConnected: boolean = false;
@@ -31,8 +32,7 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware => {
     let withTokenRefresh: boolean = false;
 
     return (next) => (action) => {
-      const { dispatch, getState } = store;
-      const state: AppState = getState();
+      const { dispatch } = store;
       const {
         wsConnect,
         wsDisconnect,
@@ -47,9 +47,7 @@ export const socketMiddleware = (wsActions: TWsActions): Middleware => {
         wsUrl = action.payload.wsUrl;
         withTokenRefresh = action.payload.withTokenRefresh;
 
-        const clearToken = state.auth.accessToken.replace('Bearer ', '');
-
-        socket = new WebSocket(`${wsUrl}?token=${clearToken}`);
+        socket = new WebSocket(wsUrl);
         isConnected = true;
         dispatch(wsConnecting());
       }

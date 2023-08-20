@@ -1,18 +1,15 @@
-import {
-  createSlice,
-  PayloadAction
-} from '@reduxjs/toolkit';
-import { getCookie } from '../../utils/cookie';
-import { AppState } from '../store';
-import { IFormProps } from '../../types/form';
-import { User } from '../../utils/api';
-import { createAppAsyncThunk } from '../thunk';
-import { RequestStatus } from '../../utils/request-status';
-import * as api from '../../utils/api';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getCookie } from "../../utils/cookie";
+import { AppState } from "../store";
+import { IFormProps } from "../../types/form";
+import { User } from "../../utils/api";
+import { createAppAsyncThunk } from "../thunk";
+import { RequestStatus } from "../../utils/request-status";
+import * as api from "../../utils/api";
 
 export const DATA_KEY = {
-  ACCESS_TOKEN: 'accessToken',
-  REFRESH_TOKEN: 'refreshToken',
+  ACCESS_TOKEN: "accessToken",
+  REFRESH_TOKEN: "refreshToken",
 };
 
 type authState = {
@@ -22,7 +19,7 @@ type authState = {
   returnUrl: string;
   restoreOk: boolean;
   status: RequestStatus;
-}
+};
 
 const setAccessToken = (state: authState, accessToken: string) => {
   state.accessToken = accessToken;
@@ -45,12 +42,12 @@ const setRefreshToken = (state: authState, refreshToken: string) => {
 };
 
 export const slice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     user: null,
-    accessToken: getCookie(DATA_KEY.ACCESS_TOKEN) || '',
-    refreshToken: localStorage.getItem(DATA_KEY.REFRESH_TOKEN) || '',
-    returnUrl: '',
+    accessToken: getCookie(DATA_KEY.ACCESS_TOKEN) || "",
+    refreshToken: localStorage.getItem(DATA_KEY.REFRESH_TOKEN) || "",
+    returnUrl: "",
     restoreOk: false,
     status: RequestStatus.INITIAL,
   } as authState,
@@ -60,7 +57,7 @@ export const slice = createSlice({
     },
     setRestoreOk(state) {
       state.restoreOk = true;
-    }
+    },
   },
   extraReducers: (builder) => {
     type RegisterPayload = PayloadAction<{
@@ -77,15 +74,13 @@ export const slice = createSlice({
 
     builder.addCase(authRegister.fulfilled, onRegister);
     builder.addCase(authLogin.fulfilled, onRegister);
-    builder.addCase(authRefresh.fulfilled, (state, {
-      payload
-    }) => {
+    builder.addCase(authRefresh.fulfilled, (state, { payload }) => {
       setAccessToken(state, payload.accessToken);
       setRefreshToken(state, payload.refreshToken);
     });
     builder.addCase(authLogout.fulfilled, (state) => {
-      setAccessToken(state, '');
-      setRefreshToken(state, '');
+      setAccessToken(state, "");
+      setRefreshToken(state, "");
       state.user = null;
       state.status = RequestStatus.INITIAL;
     });
@@ -99,11 +94,14 @@ export const slice = createSlice({
     builder.addCase(authUser.rejected, (state) => {
       state.status = RequestStatus.ERROR;
     });
-  
+    builder.addCase(authRefresh.rejected, (state) => {
+      state.status = RequestStatus.ERROR;
+    });
+
     builder.addCase(patchUser.fulfilled, (state, { payload }) => {
       state.user = payload.user;
-    })
-  }
+    });
+  },
 });
 
 export const authSelectors = {
@@ -113,56 +111,51 @@ export const authSelectors = {
 };
 
 export const authRegister = createAppAsyncThunk(
-  'auth/register',
-  api.authRegister,
+  "auth/register",
+  api.authRegister
 );
 
-export const authLogin = createAppAsyncThunk(
-  'auth/login',
-  api.authLogin
-);
+export const authLogin = createAppAsyncThunk("auth/login", api.authLogin);
 
 export const authRefresh = createAppAsyncThunk(
-  'auth/refresh',
+  "auth/refresh",
   async (_, { getState }) => {
     const state = getState();
     const refreshToken = state.auth.refreshToken;
     return await api.authRefresh({ token: refreshToken });
-  },
+  }
 );
 
 export const authLogout = createAppAsyncThunk(
-  'auth/logout',
-  async (_, {
-    getState
-  }) => {
+  "auth/logout",
+  async (_, { getState }) => {
     const state = getState();
 
     return await api.authLogout({
-      token: state.auth.refreshToken
+      token: state.auth.refreshToken,
     });
-  },
+  }
 );
 
 export const authUser = createAppAsyncThunk(
-  'auth/user',
+  "auth/user",
   async (_, { getState }) => {
     const state = getState();
     const accessToken = state.auth.accessToken;
-    
+
     return await api.authUser({ accessToken });
-  },
+  }
 );
 
 export const patchUser = createAppAsyncThunk(
-  'auth/profile',
+  "auth/profile",
   async (data: IFormProps, { getState }) => {
     const state = getState();
     const accessToken = state.auth.accessToken;
 
     return await api.patchUser({ data, accessToken });
-  },
-)
+  }
+);
 
 export const authActions = slice.actions;
 export default slice.reducer;

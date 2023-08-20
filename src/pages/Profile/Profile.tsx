@@ -1,15 +1,15 @@
 import {
   Input,
   Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useNavigate } from 'react-router-dom';
-import { authUser, patchUser } from '../../services/reducers/auth';
-import { FC, useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../../services/store';
-import { IFormProps } from '../../types/form';
-import { ProfileNav } from '../../components/profile-nav/profile-nav';
-import styles from './Profile.module.css';
-import cn from 'classnames';
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useNavigate } from "react-router-dom";
+import { authUser, patchUser } from "../../services/reducers/auth";
+import { FC, useEffect, useState } from "react";
+import { useAppSelector, useAppDispatch } from "../../services/store";
+import { IFormProps } from "../../types/form";
+import { ProfileNav } from "../../components/profile-nav/profile-nav";
+import styles from "./Profile.module.css";
+import cn from "classnames";
 
 export const ProfilePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ export const ProfilePage: FC = () => {
     email: "",
     password: "",
   });
-  const [isButtonDisabled, setIsButtonDissabled] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -46,7 +46,8 @@ export const ProfilePage: FC = () => {
   };
 
   const onCancel = async () => {
-    setIsButtonDissabled(true);
+    setIsDirty(false);
+
     try {
       const res = await dispatch(authUser()).unwrap();
       if (res.success) {
@@ -64,6 +65,7 @@ export const ProfilePage: FC = () => {
       ...formValue,
       [target.name]: target.value,
     });
+    setIsDirty(true);
   };
 
   return (
@@ -97,11 +99,7 @@ export const ProfilePage: FC = () => {
         />
 
         <div className={styles.button_container}>
-          <Button 
-            htmlType="submit" 
-            type="primary" 
-            size="medium"
-          >
+          <Button htmlType="submit" type="primary" size="medium">
             Сохранить
           </Button>
 
@@ -111,7 +109,7 @@ export const ProfilePage: FC = () => {
             size="medium"
             extraClass={styles.button}
             onClick={onCancel}
-            disabled={isButtonDisabled}
+            disabled={!isDirty}
           >
             Отмена
           </Button>
@@ -121,4 +119,4 @@ export const ProfilePage: FC = () => {
       <div className={cn(styles.menu, "ml-15")}></div>
     </div>
   );
-}
+};
